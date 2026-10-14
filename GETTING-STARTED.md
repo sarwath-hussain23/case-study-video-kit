@@ -1,174 +1,115 @@
 # Getting started: make a case study video
 
-This kit turns one document about an automation you built into a polished 2 to 4 minute video. The video has a professional voiceover, music, captions and animated graphics in the ByteIT style.
+This kit turns a document about an automation you built into a polished 2 to 4 minute video. The video has a professional voiceover, music, captions and animated graphics in the organization's own colors.
 
-You don't edit video. You fill in a form, drop in your files, and approve a few things along the way. Claude Code does the rest.
+You don't edit video, and you don't need technical skills. You give Claude three things, approve a few checkpoints, and get the finished video.
+
+---
+
+## What you need (once)
+
+| | What | Notes |
+|---|---|---|
+| 1 | **A Claude account with Claude Code** | The desktop app is easiest: [claude.com/claude-code](https://claude.com/claude-code) |
+| 2 | **A Mac or Windows computer** | Claude installs the other software for you (it asks first) |
+| 3 | **An ElevenLabs account, paid plan** | For the narrator's voice. The Starter plan or higher allows business use; the free plan doesn't. [elevenlabs.io](https://elevenlabs.io) |
+
+### Getting your ElevenLabs key
+
+Claude will ask for this the first time. Here's where to find it:
+
+1. Log in to ElevenLabs. Click your profile, then **API Keys**, then **Create API Key**.
+2. **Copy the key right away.** It starts with `sk_` and is shown only once.
+   - The short code shown later in the key list is the key's *ID*. It won't work.
+3. Claude opens a small file for you (TextEdit on a Mac, Notepad on Windows). Paste the key after the `=` sign, save, and close it.
+
+> **Keep this key private.** Don't paste it in the chat, email or Slack.
+
+---
+
+## What you prepare (each video)
+
+1. **The use-case document** (Word, PDF or text). It should cover the problem, the tools, how it works step by step, the output, and the results **with real numbers**.
+   > The video only uses numbers that appear in this document. That protects you from publishing something wrong.
+2. **A screen recording** of the working automation (optional but recommended). Scroll slowly; 30 seconds to 3 minutes is plenty. **Hide anything private** first: client names, emails, passwords.
+3. **The organization's website**, for example `https://client.com`. Claude studies it and builds their colors, font, logo and tone of voice. For a ByteIT video, just write "ByteIT".
+
+---
+
+## How to start
+
+Open Claude Code and paste this, filling in the three lines:
+
+```text
+Install the case study video kit from https://github.com/sarwath-hussain23/case-study-video-kit
+and follow its SKILL.md to make a case study video.
+Use-case document: <drag the file here>
+Screen recording: <drag the file here, or write "none">
+Organization website: <https://... , or write "ByteIT">
+```
+
+Tip: you can drag a file from Finder or File Explorer into the Claude Code window to insert its location.
+
+The first time, Claude installs the kit and the tools it needs (about 10 minutes). After that, it goes straight to work.
+
+---
+
+## The checkpoints you approve
+
+Claude stops and waits for your OK at each of these:
+
+| Checkpoint | What you'll see | What you check |
+|---|---|---|
+| **Brand** *(non-ByteIT brands only)* | The organization's colors, font, logo and tone of voice, plus two sample frames | Does it look and sound like them? |
+| **Facts** | A one-page summary of the problem, steps and results, and the answers Claude filled in for you (anything it guessed is marked "(guess)") | Are the facts and numbers right? Fix any guesses. |
+| **Script** | The words the narrator will say, scene by scene | Does it sound right? Changes are free at this stage. |
+| **Voice** *(optional)* | 3 short voice samples | Which voice fits? (Default: "Eric") |
+| **Final video** | The finished MP4 | Watch the whole thing, **with sound** |
+
+Rendering the video takes about 20 minutes. You can do other work meanwhile.
+
+**Total time:** about 45 to 90 minutes from start to finished video, mostly waiting.
 
 ---
 
 ## What you get back
 
-When the video is done, three files appear in your project's `out/` folder:
-
 | File | What it is | What to do with it |
 |---|---|---|
 | `<name>.mp4` | The finished video (1080p, about 3 minutes) | Post it on LinkedIn or the website, or play it in a sales call |
-| `captions.srt` | Subtitles that match the voiceover | Upload it with the video on LinkedIn or YouTube, so people watching on mute can follow |
-| `SCRIPT.md` | The full script and a scene-by-scene plan | Share it with whoever needs to approve the wording |
+| `captions.srt` | Subtitles that match the voice | Upload it with the video, so people watching on mute can follow |
+| `SCRIPT.md` | The script and scene plan | Share it with whoever approves the wording |
 
----
-
-## What you need to prepare
-
-### 1. The use-case document (required)
-
-A Word file, PDF or text document that explains the automation. It should cover:
-
-- **The problem:** what was slow, manual or broken before
-- **The solution:** which tools you connected
-- **How it works:** the steps, in order
-- **The output:** what the automation produces
-- **The results:** real numbers, such as "8–10 minutes saved per meeting" or "95% accuracy"
-
-> **Important:** the video only uses numbers that appear in this document. If a number isn't in the document, it won't appear in the video. This protects you from publishing something wrong.
-
-### 2. A screen recording of the automation (recommended)
-
-Record your screen while you scroll slowly through the working automation, for example the n8n workflow.
-
-- 30 seconds to 3 minutes is plenty
-- Use 1080p or higher
-- **Hide anything private** before recording: client names, emails, passwords, API keys. If you can't hide it, write it in the form and it will be cropped out.
-
-### 3. For a client-branded video: their website (optional)
-
-Videos use the ByteIT look by default. To make one in a client's brand, write their website address in the form. Claude studies the site and builds the client's colors, font, logo and tone of voice for you. If the client has a brand guidelines PDF or an SVG logo, add those to `intake/` as well.
-
-### 4. The intake form (required)
-
-A short form, `INTAKE.md`, with 15 questions: who the video is for, which results to feature, what must not appear, and similar. It takes about 10 minutes. A filled-in example is at the end of this guide.
-
----
-
-## One-time setup (about 15 minutes)
-
-You need a Mac with these installed:
-
-| What | Why | How to get it |
-|---|---|---|
-| **Claude Code** (desktop app) | It builds the video for you | [claude.com/claude-code](https://claude.com/claude-code) |
-| **Homebrew** | Installs the tools below | [brew.sh](https://brew.sh) |
-| **Node.js**, **ffmpeg**, **Git** | Run the video engine | Paste in Terminal: `brew install node ffmpeg git` |
-| **Google Chrome** | Draws each frame of the video | [google.com/chrome](https://www.google.com/chrome) |
-| **ElevenLabs account, paid plan** | The voiceover. The free plan doesn't allow business use. | [elevenlabs.io](https://elevenlabs.io): Starter plan or higher |
-
-### Step 1: Install the kit
-
-Open **Terminal** and paste these two lines, one at a time:
-
-```bash
-git clone https://github.com/sarwath-hussain23/case-study-video-kit.git ~/.claude/skills/case-study-video
-```
-
-```bash
-cd ~/.claude/skills/case-study-video && npm install
-```
-
-### Step 2: Make a folder for your videos
-
-```bash
-mkdir -p ~/Videos/case-studies
-```
-
-### Step 3: Add your ElevenLabs key
-
-1. Log in to ElevenLabs. Click your profile, then **API Keys**, then **Create API Key**.
-2. Copy the key right away. It starts with `sk_` and is shown **only once**.
-   - The short code in the key list is the *key ID*, not the key. It will not work.
-3. In Terminal, paste this, replacing `sk_PASTE_YOUR_KEY_HERE` with your key:
-
-```bash
-printf 'ELEVENLABS_API_KEY=sk_PASTE_YOUR_KEY_HERE\n' > ~/Videos/case-studies/.env
-```
-
-> **Keep this key private.** Don't paste it in chat, email or Slack, and never put it inside the kit folder.
-
----
-
-## Making a video (every time)
-
-1. **Open Claude Code** in your `~/Videos/case-studies` folder.
-2. **Type:** `/case-study-video` and describe the video in one line, for example *"Video for our invoice-matching automation."*
-3. Claude creates a project folder. **Put your files in its `intake/` folder:** the document, the recording, and the filled-in `INTAKE.md`.
-4. Tell Claude: **"Files are in."**
-5. **Claude runs a pre-flight check.** It confirms everything is there and correct before spending any money or time. If something is missing, it tells you exactly what to fix.
-6. **You approve 3 to 5 things along the way:**
-
-| Checkpoint | What you'll see | What you're checking |
-|---|---|---|
-| **0. Brand** *(client brands only)* | The brand's "DNA": colors, font, logo, tone of voice, built by Claude from their website | Does it look and sound like them? |
-| **1. Facts** | A one-page summary of the problem, steps and results | Are the facts and numbers right? |
-| **2. Script** | The words the narrator will say, scene by scene | Does it sound right? Change anything you like; it's free at this stage. |
-| **3. Voice** *(optional)* | 3 short voice samples | Which voice fits? (Default: "Eric") |
-| **4. Final video** | The finished MP4 | Watch the whole thing, **with sound** |
-
-7. Rendering takes about 20 minutes. You can do other work meanwhile.
-
-**Total time:** about 45 to 90 minutes from files to finished video, mostly waiting.
+Claude tells you where these files are when it finishes. They're in a `case-studies` folder in your home folder.
 
 ---
 
 ## Before you publish: your 2-minute check
 
-Claude can't hear audio, so a human must:
+Claude can't hear audio, so a person must:
 
 - [ ] Watch the whole video **with sound**
-- [ ] Check that names, tools and acronyms are pronounced correctly
-- [ ] Check that every number matches the source document
-- [ ] Check that nothing private shows on screen
-- [ ] Check that the animations line up with what the narrator says
+- [ ] Check names, tools and acronyms are pronounced correctly
+- [ ] Check every number matches the source document
+- [ ] Check nothing private shows on screen
 
-Found a problem? Tell Claude what and at which time (for example, *"at 1:12 'Fathom' sounds wrong"*). Most fixes take 20 to 30 minutes, mostly re-rendering.
+Found a problem? Tell Claude what and when, for example *"at 1:12, 'Fathom' sounds wrong"*. Most fixes take 20 to 30 minutes, mostly re-rendering.
 
 ---
 
-## When something goes wrong
+## If something goes wrong
 
 | You see | What it means | What to do |
 |---|---|---|
-| "API key ID used as API key" | You copied the key's short ID, not the key | Create a new key in ElevenLabs and copy the `sk_…` value |
-| "Missing ELEVENLABS_API_KEY" | The key file isn't where the kit looks | Re-run Step 3 above |
-| The key file "isn't found" but you saved it | TextEdit saved it as rich text or added `.rtf` | Use the `printf` command in Step 3 instead of TextEdit |
-| "INTAKE.md filled in … FAIL" | Some questions in the form are still blank (`____`) | Answer them, or write "n/a" |
-| "Figure '…' appears in the source document … FAIL" | The script has a number that isn't in your document | Correct the script, or add the source to the document |
+| "Key starts with sk_ … FAIL" | You pasted the key's ID, or the file still has no key | Create a new key in ElevenLabs and paste the `sk_…` value |
+| "Missing ELEVENLABS_API_KEY" | The key file is empty or wasn't saved | Ask Claude to open the key file again, paste the key, save |
 | "Not enough credits" | Your ElevenLabs balance is low | Top up or upgrade your plan |
-| The logo looks blurry | The logo file is small | Get a larger logo (at least 600 px wide) |
+| "Figure … appears in the source document … FAIL" | The script has a number that isn't in your document | Correct the script, or add the source to the document |
+| Windows: a tool is "missing" right after installing it | Windows hasn't reloaded its settings | Close and reopen Claude Code |
+| Windows: "winget not found" | The Windows installer tool is missing | Install **App Installer** from the Microsoft Store |
+| Mac: "brew not found" | Homebrew (the Mac installer tool) is missing | Claude shows you the one-line install from [brew.sh](https://brew.sh) |
+| The logo looks blurry | The logo on the website is small | Send Claude a bigger logo file (SVG is best) |
 
 ---
 
-## Example: a filled-in intake form
-
-```
-- Project or client name: Automated Meeting Attendance & AI Notes
-- Can the client be named in the video?: yes (ByteIT internal build)
-- One sentence: what does the automation do? Pulls Google Calendar meetings,
-  matches who attended in Google Meet, and writes attendance plus AI notes
-  into the meeting's Google Doc.
-- Who will watch it?: Prospects (small business owners and operations leads)
-- Where will it be posted?: LinkedIn and byteit.com
-- Target length: 2 to 4 minutes
-- Headline results: 100% automated capture; 8–10 min to produce minutes
-  cut to 0; 95%+ attendance precision
-- If the document gives two different figures, which one wins?: 8–10 minutes
-- Anything that must NOT appear: workspace owner's name in the n8n title bar
-- Special pronunciations: n8n is said "n-eight-n"
-- Brand: ByteIT
-- Call to action: byteit.com, 855-429-8348
-- Voice: Eric
-- Who approves: Sarwath
-- Deadline: n/a
-```
-
----
-
-**Questions?** Open an issue on this repository, or ask Claude Code directly: it has read this whole kit.
+**Questions?** Ask Claude Code directly: it has read this whole kit. Or open an issue on this repository.

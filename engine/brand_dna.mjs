@@ -76,7 +76,7 @@ if (dna.font.googleFont) {
 const logoOut = path.join(out, 'logo.png');
 const src = dna.logo?.url || (dna.logo?.file && path.resolve(path.dirname(dnaFile), dna.logo.file));
 if (!src) { console.error('logo.url or logo.file is required'); process.exit(1); }
-const raw = path.join(out, 'logo-source' + (path.extname(new URL(src, 'file:///').pathname) || '.png'));
+const raw = path.join(out, 'logo-source' + (path.extname(src.split(/[?#]/)[0]).toLowerCase() || '.png'));
 if (/^https?:/.test(src)) writeFileSync(raw, Buffer.from(await (await fetch(src)).arrayBuffer()));
 else copyFileSync(src, raw);
 if (raw.endsWith('.svg')) {

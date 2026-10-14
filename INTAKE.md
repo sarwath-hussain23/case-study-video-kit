@@ -1,6 +1,6 @@
 # Video intake form
 
-Answer every question below (each blank is a run of underscores), save this file in the project's `intake/` folder, and put your files next to it. The preflight check refuses to start while any blank is left. Write "n/a" where a question does not apply.
+Claude drafts this form from your use-case document and the organization's website, and marks anything it guessed with "(guess)". You only check and correct it at the Facts checkpoint. Every blank (a run of underscores) must be answered before the script is written; write "n/a" where a question does not apply.
 
 ## 1. Files to include in `intake/`
 

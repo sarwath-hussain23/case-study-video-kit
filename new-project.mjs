@@ -1,5 +1,5 @@
 // Create a new video project folder from the kit.
-//   node new-project.mjs <folder> --title "Automated Meeting Attendance" [--brand byteit]
+//   node new-project.mjs <folder> --title "Automated Meeting Attendance" [--brand byteit] [--website https://client.com]
 // The folder gets: intake/ (drop inputs here), src/ (page + brand assets), audio/, out/,
 // project.json, vo.json and a starter index.html with the title and CTA scenes.
 import { mkdirSync, copyFileSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
@@ -9,8 +9,9 @@ import { KIT, readJSON, arg, findBrand, applyBrand } from './engine/lib.mjs';
 const dir = process.argv[2];
 const title = arg('--title');
 const brandName = arg('--brand') || 'byteit';
+const website = arg('--website');
 if (!dir || dir.startsWith('--') || !title) {
-  console.error('Usage: node new-project.mjs <folder> --title "Video title" [--brand byteit]');
+  console.error('Usage: node new-project.mjs <folder> --title "Video title" [--brand byteit] [--website https://client.com]');
   process.exit(2);
 }
 if (existsSync(path.join(dir, 'project.json'))) { console.error(`${dir} already has a project.json`); process.exit(1); }
@@ -31,7 +32,7 @@ writeFileSync(path.join(dir, 'src/timeline.js'), 'window.VO = {};\nwindow.VO_REF
 
 const slug = path.basename(path.resolve(dir));
 writeFileSync(path.join(dir, 'project.json'), JSON.stringify({
-  title, output: `${brand.name}_${slug}`.replace(/[^\w-]+/g, '_'), targetSeconds: [120, 240],
+  title, output: `${brand.name}_${slug}`.replace(/[^\w-]+/g, '_'), targetSeconds: [120, 240], ...(website && { brandWebsite: website }),
 }, null, 2) + '\n');
 applyBrand(dir, brandDir, brandName);
 writeFileSync(path.join(dir, 'vo.json'), JSON.stringify([

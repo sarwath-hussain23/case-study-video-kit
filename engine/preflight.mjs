@@ -6,7 +6,7 @@
 import { existsSync, readdirSync, readFileSync, statSync, openSync, readSync, closeSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
-import { KIT, projectDir, readJSON, arg, elevenLabsKey } from './lib.mjs';
+import { KIT, projectDir, readJSON, arg, elevenLabsKey, docxText, chromeInstalled, installHint } from './lib.mjs';
 
 const project = projectDir();
 const stage = arg('--stage');
@@ -24,9 +24,7 @@ const docs = intakeFiles.filter((f) => DOC_EXT.includes(path.extname(f).toLowerC
 function docText() {
   return docs.map((f) => {
     const p = path.join(intake, f), ext = path.extname(f).toLowerCase();
-    if (ext === '.docx') {
-      try { return execFileSync('unzip', ['-p', p, 'word/document.xml']).toString().replace(/<\/w:p>/g, '\n').replace(/<[^>]+>/g, ''); } catch { return ''; }
-    }
+    if (ext === '.docx') { try { return docxText(p); } catch { return ''; } }
     if (ext === '.pdf') { try { return execFileSync('pdftotext', [p, '-']).toString(); } catch { return ''; } }
     return readFileSync(p, 'utf8');
   }).join('\n');
@@ -45,11 +43,10 @@ const sceneIds = (h) => [...h.matchAll(/<section class="scene[^"]*" id="([^"]+)"
 if (stage === 'inputs') {
   // Tools
   const node = +process.versions.node.split('.')[0];
-  check('FAIL', node >= 18, `Node.js ${process.versions.node} (need 18+)`);
-  check('FAIL', has('ffmpeg') && has('ffprobe'), 'ffmpeg and ffprobe installed');
-  const chrome = ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/google-chrome-stable'].some(existsSync);
-  check('FAIL', chrome, 'Google Chrome installed (renders the frames)');
-  check('FAIL', existsSync(path.join(KIT, 'node_modules/playwright-core')), 'playwright-core installed in the kit (run: npm install in the kit folder)');
+  check('FAIL', node >= 18, `Node.js ${process.versions.node} (need 18+; install: ${installHint('node')})`);
+  check('FAIL', has('ffmpeg') && has('ffprobe'), `ffmpeg and ffprobe installed (install: ${installHint('ffmpeg')})`);
+  check('FAIL', chromeInstalled(), `Google Chrome installed, renders the frames (install: ${installHint('chrome')})`);
+  check('FAIL', existsSync(path.join(KIT, 'node_modules/playwright-core')), `playwright-core installed (run: npm install, in ${KIT})`);
 
   // Inputs
   check('FAIL', docs.length > 0, `Use-case document in intake/ (${DOC_EXT.join(', ')})${docs.length ? ': ' + docs.join(', ') : ''}`);
@@ -59,9 +56,7 @@ if (stage === 'inputs') {
     for (const section of ['problem', 'solution', 'result']) check('WARN', new RegExp(section, 'i').test(text), `Document mentions a "${section}" section`);
     check('WARN', /\d+\s*%|\d+\s*(min|hour|hr|day|x)\b/i.test(text), 'Document has at least one measurable result (%, minutes, hours...)');
   }
-  const form = path.join(intake, 'INTAKE.md');
-  const formText = existsSync(form) ? readFileSync(form, 'utf8') : '';
-  check('FAIL', formText && !/_{4,}/.test(formText), 'intake/INTAKE.md filled in (no ____ blanks left)');
+  if (cfg.brand === 'byteit' && !cfg.brandWebsite) results.push({ level: 'INFO', msg: 'No brand website given: the video uses the ByteIT brand' });
 
   check('WARN', existsSync(path.join(project, 'BRAND-DNA.md')), `Brand DNA guideline present (BRAND-DNA.md for brand "${cfg.brand}"); build it with brand_dna.mjs for a new brand`);
   const logo = path.join(project, 'src/assets/logo.png');
@@ -81,7 +76,7 @@ if (stage === 'inputs') {
   const key = elevenLabsKey(project);
   check('FAIL', !!key, 'ELEVENLABS_API_KEY set (env, project .env or projects-folder .env)');
   if (key) {
-    check('FAIL', key.startsWith('sk_'), 'Key is the secret key (starts with sk_), not the key ID');
+    check('FAIL', key.startsWith('sk_'), 'Key starts with sk_ (a different value means the key ID or the placeholder was pasted; copy the secret key from ElevenLabs > API Keys)');
     try {
       const res = await fetch('https://api.elevenlabs.io/v1/user/subscription', { headers: { 'xi-api-key': key } });
       if (res.status === 401 && (await res.text()).includes('missing_permissions')) {
@@ -104,6 +99,8 @@ if (stage === 'inputs') {
 if (stage === 'script') {
   const lines = vo(), h = html(), scenes = sceneIds(h);
   const ids = lines.map((l) => l.id);
+  const form = path.join(intake, 'INTAKE.md');
+  check('FAIL', existsSync(form) && !/_{4,}/.test(readFileSync(form, 'utf8')), 'intake/INTAKE.md drafted from the inputs and confirmed by the user (no ____ blanks left)');
   check('FAIL', new Set(ids).size === ids.length, 'vo.json scene ids are unique');
   for (const s of scenes) check('FAIL', ids.includes(s.id) || s.fixed, `Scene ${s.id} has a voiceover line or data-fixed`);
   for (const id of ids) check('FAIL', scenes.some((s) => s.id === id), `vo.json line ${id} has a scene in index.html`);
