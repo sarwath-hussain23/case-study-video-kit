@@ -60,9 +60,10 @@ if (dna.font.googleFont) {
     writeFileSync(path.join(out, 'fonts', `${slug}-${w}.woff2`), Buffer.from(await (await fetch(url)).arrayBuffer()));
     faces += `@font-face{font-family:"${family}";font-weight:${w};src:url(assets/fonts/${slug}-${w}.woff2) format("woff2");font-display:block}\n`;
   }
-  if (!existsSync(path.join(out, 'fonts', 'OFL.txt')) && dna.font.license !== 'none') {
-    warn.push(`Add the font license to fonts/ (Google Fonts are mostly OFL: https://fonts.google.com/specimen/${family.replace(/ /g, '+')}/license)`);
-  }
+  // Google Fonts are mostly under the SIL Open Font License, which must travel with the files.
+  const ofl = await fetch(`https://raw.githubusercontent.com/google/fonts/main/ofl/${family.toLowerCase().replace(/[^a-z0-9]/g, '')}/OFL.txt`).catch(() => null);
+  if (ofl?.ok) writeFileSync(path.join(out, 'fonts', 'OFL.txt'), await ofl.text());
+  else warn.push(`Add the font license to fonts/ (see https://fonts.google.com/specimen/${family.replace(/ /g, '+')}/license)`);
 } else if (dna.font.files) {
   for (const [w, file] of Object.entries(dna.font.files)) {
     copyFileSync(path.resolve(path.dirname(dnaFile), file), path.join(out, 'fonts', `${slug}-${w}.woff2`));

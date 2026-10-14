@@ -54,7 +54,7 @@ svg{display:block}
 .eyebrow{font-size:22px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:22px}
 .light-eyebrow{color:var(--accent)}
 .h2{font-size:76px;line-height:1.1;font-weight:700;color:var(--primary-dark);letter-spacing:-.01em}
-.tc{text-align:center}
+.tc{text-align:center;max-width:1500px;text-wrap:balance}
 .hl-text{color:var(--primary)}
 .lead{font-size:32px;font-weight:300;margin-top:28px;color:#333}
 .swoosh-wrap{position:relative;display:inline-block}
@@ -65,7 +65,7 @@ svg{display:block}
 
 /* ---------- S0 title ---------- */
 .title-logo{width:280px;margin-bottom:56px}
-.title{font-size:88px;line-height:1.12;font-weight:700;text-align:center;color:var(--primary-dark);letter-spacing:-.015em}
+.title{font-size:88px;line-height:1.12;font-weight:700;text-align:center;color:var(--primary-dark);letter-spacing:-.015em;max-width:1500px;text-wrap:balance}
 
 /* ---------- S1 hook ---------- */
 .hook-left{position:absolute;left:150px;top:250px}
