@@ -1,0 +1,10 @@
+{
+  "name": "case-study-video-kit",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Turn a use-case document into a branded 2-4 minute case study video.",
+  "dependencies": {
+    "playwright-core": "^1.48.2"
+  }
+}

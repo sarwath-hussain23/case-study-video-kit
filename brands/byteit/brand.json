@@ -1,0 +1,27 @@
+{
+  "name": "ByteIT",
+  "spokenName": "ByteIT",
+  "website": "byteit.com",
+  "phone": "855-429-8348",
+  "tagline": "Automate the busywork. Focus on growing your business.",
+  "voice": {
+    "name": "Eric",
+    "id": "cjVigY5qzO86Huf0OWal",
+    "model": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.5,
+      "similarity_boost": 0.75,
+      "style": 0.15,
+      "use_speaker_boost": true,
+      "speed": 0.95
+    }
+  },
+  "voiceCandidates": {
+    "eric": "cjVigY5qzO86Huf0OWal",
+    "brian": "nPczCjzI2devNBz1zQrb",
+    "matilda": "XrExE9yKIg1WjnnlVkGX"
+  },
+  "pronounce": {
+    "n8n": "n-eight-n"
+  }
+}

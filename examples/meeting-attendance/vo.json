@@ -1,0 +1,54 @@
+[
+  {
+    "id": "s1_hook",
+    "text": "Every meeting ends the same way. Someone takes attendance, chases down who was missing, and turns scattered notes into minutes. That's eight to ten minutes, after every single session."
+  },
+  {
+    "id": "s2_problem",
+    "text": "The AI notetakers captured the conversation, but none of them tracked attendance, or participant telemetry. And there was no central view of who actually showed up, or for how long."
+  },
+  {
+    "id": "s3_solution",
+    "text": "So ByteIT built an end-to-end meeting intelligence loop. Five tools, working as one: Google Calendar, the Google Meet v2 API, Google Drive and Docs, Fathom AI, and a self-hosted n8n automation engine."
+  },
+  {
+    "id": "s4_step1",
+    "text": "Here's how it works. First, a scheduled scan pulls events from Google Calendar, and filters out anything that isn't a real meeting. Out-of-office blocks, prayer times, and breaks."
+  },
+  {
+    "id": "s5_step2",
+    "text": "Next, the Google Meet API retrieves the actual conference records, and matches each one to its calendar event, by meeting code, or by start-time proximity."
+  },
+  {
+    "id": "s6_step3",
+    "text": "Then the engine calculates participant telemetry. Exact join and leave times, and total presence, down to the second. AI bots like Fathom are isolated, so they never distort human attendance."
+  },
+  {
+    "id": "s7_step4",
+    "text": "It locates the meeting's Google Drive folder, and a multi-format date engine pairs today's session with its Gemini Notes document, no matter how the date is written."
+  },
+  {
+    "id": "s8_step5",
+    "text": "Fathom's summary is cleaned up by an AI model, into key points, decisions, and action items. Finally, a filter guard skips ad-hoc or unrecorded calls, and a batch update writes everything into the Google Doc."
+  },
+  {
+    "id": "s9_hood",
+    "text": "Under the hood, it's one n8n workflow, with custom JavaScript handling time zone normalization, time-window alignment, and conditional routing."
+  },
+  {
+    "id": "s10_output",
+    "text": "The result? One document per meeting. An attendance summary. A structured table of who was present or absent, with join time, leave time, and duration. A full participant log. And polished AI meeting notes."
+  },
+  {
+    "id": "s11_results",
+    "text": "Today, one hundred percent of targeted meetings are captured automatically. Producing minutes went from eight to ten minutes per meeting, to zero manual effort. And attendance precision now exceeds ninety-five percent."
+  },
+  {
+    "id": "s12_impact",
+    "text": "Those saved hours now go into core projects, AI agent engineering, and strategic initiatives."
+  },
+  {
+    "id": "s13_cta",
+    "text": "ByteIT. Automate the busywork. Focus on growing your business."
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "title": "Automated Meeting Attendance & AI Notes",
+  "brand": "byteit",
+  "output": "ByteIT_Meeting_Attendance_AI_Notes",
+  "targetSeconds": [
+    120,
+    240
+  ],
+  "voice": {
+    "name": "Eric",
+    "id": "cjVigY5qzO86Huf0OWal",
+    "model": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.5,
+      "similarity_boost": 0.75,
+      "style": 0.15,
+      "use_speaker_boost": true,
+      "speed": 0.95
+    }
+  },
+  "voiceCandidates": {
+    "eric": "cjVigY5qzO86Huf0OWal",
+    "brian": "nPczCjzI2devNBz1zQrb",
+    "matilda": "XrExE9yKIg1WjnnlVkGX"
+  },
+  "pronounce": {
+    "n8n": "n-eight-n"
+  }
+}

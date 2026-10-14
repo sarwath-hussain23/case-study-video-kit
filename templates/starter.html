@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{TITLE}}</title>
+<link rel="stylesheet" href="brand.css">
+<link rel="stylesheet" href="base.css">
+</head>
+<body>
+{{ICONS}}
+<div id="stage">
+
+  <!-- Title card: no voiceover, fixed length -->
+  <section class="scene light" id="s00_title" data-fixed="3.6" data-nologo>
+    <div class="bg-arc"></div>
+    <div class="center col">
+      <img class="a pop title-logo" style="--d:0.1" src="assets/logo.png" alt="{{BRAND}}">
+      <div class="a rise eyebrow" style="--d:0.9">{{EYEBROW}}</div>
+      <h1 class="a rise title" style="--d:1.1">{{TITLE}}</h1>
+    </div>
+  </section>
+
+  <!-- Add story scenes here from scenes/catalog.md. Each scene id needs a matching line in vo.json. -->
+
+  <!-- CTA: holds 4 s after the voiceover -->
+  <section class="scene light" id="s99_cta" data-tail="4" data-nologo>
+    <div class="bg-arc"></div>
+    <div class="center col">
+      <img class="a pop cta-logo" style="--d:-0.3" src="assets/logo.png" alt="{{BRAND}}">
+      <h2 class="a rise h2 tc" style="--d:0.9">{{TAGLINE}}</h2>
+      <div class="a rise contact" style="--d:3.0"><span>{{WEBSITE}}</span><i></i><span>{{PHONE}}</span></div>
+    </div>
+  </section>
+
+</div>
+<script src="timeline.js"></script>
+<script src="player.js"></script>
+</body>
+</html>
