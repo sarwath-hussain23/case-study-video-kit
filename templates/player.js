@@ -9,7 +9,9 @@
 // - Footage: <img data-footage="assets/footage" data-frames="N"> plays frames f_0001.jpg..f_N.jpg
 //   across its scene.
 // - Light scenes get the brand corner logo unless they carry data-nologo.
-// - .step scenes get a progress tracker (data-step = this step's number).
+// - .step scenes get a progress tracker (data-step = this step's number). A scene between steps
+//   (for example safeguards after step 5) can carry class "step-aside" and data-after="5": it shows
+//   the tracker with steps 1-5 done and none active.
 (function () {
   const LEAD = 0.7, TAIL = 0.9, XFADE = 0.5;
   const VO = window.VO || {}, REF = window.VO_REF || {};
@@ -50,8 +52,9 @@
   });
 
   const steps = document.querySelectorAll('.step');
-  steps.forEach((el) => {
-    const n = +el.dataset.step;
+  document.querySelectorAll('.step, .step-aside').forEach((el) => {
+    // An aside after step N: steps 1..N done, none active.
+    const n = el.classList.contains('step-aside') ? +el.dataset.after + 0.5 : +el.dataset.step;
     const tr = document.createElement('div');
     tr.className = 'tracker';
     tr.innerHTML = '<span class="lab">HOW IT WORKS</span>' +

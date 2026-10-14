@@ -56,19 +56,20 @@ The first time, Claude installs the kit and the tools it needs (about 10 minutes
 
 ## The checkpoints you approve
 
-Claude stops and waits for your OK at each of these:
+Claude stops and waits for your OK at each of these. To approve, Claude gives you **one command**: paste it into a terminal window (the Terminal panel in the Claude Code desktop app, Terminal on a Mac, or PowerShell on Windows), read what it asks, and type `yes`. Only you can approve; Claude can't do it for you.
 
 | Checkpoint | What you'll see | What you check |
 |---|---|---|
 | **Brand** *(non-ByteIT brands only)* | The organization's colors, font, logo and tone of voice, plus two sample frames | Does it look and sound like them? |
 | **Facts** | A one-page summary of the problem, steps and results, and the answers Claude filled in for you (anything it guessed is marked "(guess)") | Are the facts and numbers right? Fix any guesses. |
+| **Footage** *(only with a recording)* | A privacy report: every email, phone number, name or other private text found in your recording, with screenshots | Choose: crop it out, blur it, use mockups instead, or leave the recording out |
 | **Script** | The words the narrator will say, scene by scene | Does it sound right? Changes are free at this stage. |
 | **Voice** *(optional)* | 3 short voice samples | Which voice fits? (Default: "Eric") |
 | **Final video** | The finished MP4 | Watch the whole thing, **with sound** |
 
-Rendering the video takes about 20 minutes. You can do other work meanwhile.
+Rendering takes a few minutes on a recent computer (longer on older ones). You can do other work meanwhile.
 
-**Total time:** about 45 to 90 minutes from start to finished video, mostly waiting.
+**Total time:** about 30 to 90 minutes from start to finished video, mostly your review time.
 
 ---
 
@@ -102,6 +103,9 @@ Found a problem? Tell Claude what and when, for example *"at 1:12, 'Fathom' soun
 | You see | What it means | What to do |
 |---|---|---|
 | "Key starts with sk_ … FAIL" | You pasted the key's ID, or the file still has no key | Create a new key in ElevenLabs and paste the `sk_…` value |
+| "Key is 51 characters long … FAIL" | Part of the key is missing, or extra text was pasted | Paste the key again, on one line, right after the `=` |
+| "This is your sign-off, so you run it yourself" | An approval command was run outside a terminal | Paste the command into a terminal window yourself |
+| "changed after the user confirmed it" | Something you approved was edited later | Review the change and approve again |
 | "Missing ELEVENLABS_API_KEY" | The key file is empty or wasn't saved | Ask Claude to open the key file again, paste the key, save |
 | "Not enough credits" | Your ElevenLabs balance is low | Top up or upgrade your plan |
 | "Figure … appears in the source document … FAIL" | The script has a number that isn't in your document | Correct the script, or add the source to the document |

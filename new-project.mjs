@@ -23,16 +23,15 @@ for (const d of ['intake', 'src', 'audio', 'out']) mkdirSync(path.join(dir, d), 
 for (const f of ['base.css', 'player.js']) copyFileSync(path.join(KIT, 'templates', f), path.join(dir, 'src', f));
 copyFileSync(path.join(KIT, 'INTAKE.md'), path.join(dir, 'intake/INTAKE.md'));
 
-const fill = (s) => s
+const fill = (s) => (brand.phone ? s : s.replace('<i></i><span>{{PHONE}}</span>', ''))
   .replaceAll('{{ICONS}}', readFileSync(path.join(KIT, 'templates/icons.svg.html'), 'utf8').trim())
   .replaceAll('{{TITLE}}', title).replaceAll('{{BRAND}}', brand.name).replaceAll('{{EYEBROW}}', 'Automation Case Study')
   .replaceAll('{{TAGLINE}}', brand.tagline).replaceAll('{{WEBSITE}}', brand.website).replaceAll('{{PHONE}}', brand.phone);
 writeFileSync(path.join(dir, 'src/index.html'), fill(readFileSync(path.join(KIT, 'templates/starter.html'), 'utf8')));
 writeFileSync(path.join(dir, 'src/timeline.js'), 'window.VO = {};\nwindow.VO_REF = {};\n');
 
-const slug = path.basename(path.resolve(dir));
 writeFileSync(path.join(dir, 'project.json'), JSON.stringify({
-  title, output: `${brand.name}_${slug}`.replace(/[^\w-]+/g, '_'), targetSeconds: [120, 240], ...(website && { brandWebsite: website }),
+  title, targetSeconds: [120, 240], ...(website && { brandWebsite: website }),
 }, null, 2) + '\n');
 applyBrand(dir, brandDir, brandName);
 writeFileSync(path.join(dir, 'vo.json'), JSON.stringify([

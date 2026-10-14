@@ -19,8 +19,16 @@ const stillsArg = process.argv.indexOf('--stills');
 const browser = await chromium.launch({ channel: 'chrome', args: ['--allow-file-access-from-files'] });
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
 await page.goto(url);
-await page.evaluate(() => window.READY);
+const pageErrors = [];
+page.on('pageerror', (e) => pageErrors.push(e.message));
+await page.evaluate(() => window.READY).catch(() => {});
 const { duration, timeline } = await page.evaluate(() => ({ duration: window.DURATION, timeline: window.TIMELINE }));
+if (!duration) {
+  console.error(`Cannot build the timeline: ${pageErrors[0] || 'no scenes found'}.`);
+  console.error('Most often the voiceover has not been generated yet: run engine/tts.mjs first.');
+  await browser.close();
+  process.exit(1);
+}
 writeFileSync(path.join(root, 'out/timeline.json'), JSON.stringify({ duration, timeline }, null, 2));
 console.log(`duration ${duration.toFixed(2)}s`);
 

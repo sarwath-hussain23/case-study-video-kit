@@ -8,7 +8,7 @@ Claude drafts this form from your use-case document and the organization's websi
 |---|---|---|---|
 | A | Use-case document (.docx, .pdf, .md or .txt) | Yes | Needs: overview, problem, solution and tools, how it works (steps), output, results with numbers. Text-based PDF, not a scan. |
 | B | Screen recording of the working automation (.mp4 or .mov) | Recommended | 1080p or larger, 30 s to 3 min, slow scrolling. Hide or note anything private (names, emails, API keys, client data). |
-| C | Logo and brand guidelines | Only for a non-ByteIT brand | SVG logo (best), or PNG at least 600 px wide with a transparent background. A brand guidelines PDF, if one exists, overrides what Claude reads from the website. |
+| C | Logo and brand guidelines | Only when the video uses the organization's own brand | SVG logo (best), or PNG at least 600 px wide with a transparent background. A brand guidelines PDF, if one exists, overrides what Claude reads from the website. |
 | D | Screenshots of the result (doc, dashboard, report) | Optional | Used to make the "output" scene look like the real thing. |
 
 ## 2. About the project
@@ -29,9 +29,9 @@ Claude drafts this form from your use-case document and the organization's websi
 
 ## 4. Brand and voice
 
-- Brand: ByteIT (default) or the client's brand? If the client's: their website URL (Claude studies it to build the Brand DNA) and, if you have them, an SVG logo and brand guidelines PDF in `intake/`: ____
+- Brand: the kit's default brand, or the organization's own? If their own: their website URL (Claude studies it to build the Brand DNA) and, if you have them, an SVG logo and brand guidelines PDF in `intake/`: ____
 - Call to action (website, phone or email shown at the end): ____
-- Voice: Eric, ByteIT default / hear samples first / other ElevenLabs voice ID: ____
+- Voice: the brand's default voice / hear samples first / other ElevenLabs voice ID: ____
 
 ## 5. Review
 

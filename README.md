@@ -2,7 +2,7 @@
 
 Turn a use-case document into a branded 2 to 4 minute case study video, with a professional voiceover, music, captions and animated graphics. Claude Code does the work and checks with you at a few approval points.
 
-Reference result: *Automated Meeting Attendance & AI Notes* (2:57). Its source lives in `examples/meeting-attendance/`.
+Reference result: *Automated Meeting Attendance & AI Notes* (2:57). Its source lives in `examples/meeting-attendance/`. What changed in each version: [CHANGELOG.md](CHANGELOG.md).
 
 ## Start here
 
@@ -29,15 +29,18 @@ The plain-English walkthrough is [GETTING-STARTED.md](GETTING-STARTED.md).
 
 ## Checkpoints (you approve each one)
 
+At each checkpoint Claude shows you what to review and gives you **one command to paste into a terminal window**. You type `yes` to approve. Only a person can do this, and editing an approved file afterwards cancels the approval.
+
 | # | Checkpoint | What you check |
 |---|---|---|
-| 1A | **Brand** (only for a non-ByteIT brand) | Colors, font, logo and tone look like the organization |
-| 1 | **Facts** | The summary and the numbers are right; correct anything Claude guessed |
-| 2 | **Script** | The words the narrator will say. Changes are free at this stage. |
+| 1A | **Brand** (only for the organization's own brand) | Colors, font, logo and tone look like the organization; colors Claude had to guess are marked |
+| 1 | **Facts** | The summary and the numbers are right; correct anything marked "(guess)" |
+| – | **Footage** (only with a recording) | The privacy report: what private text was found, and whether to crop, blur, use mockups instead, or leave the recording out |
+| 2 | **Script** | The words the narrator will say. Changes are free now; the voice is only generated after this approval. |
 | 3 | **Voice** (optional) | Pick from 3 voice samples (default: "Eric") |
 | 4 | **Final video** | Watch it **with sound** before you publish |
 
-Typical time: 45 to 90 minutes, about 20 of them unattended rendering.
+Typical time: 30 to 90 minutes, mostly your review. Rendering is unattended; measured on a recent Mac: a 67-second video in under 2 minutes. Older computers take longer.
 
 ## What you get
 
@@ -66,7 +69,9 @@ Typical time: 45 to 90 minutes, about 20 of them unattended rendering.
 | `engine/brand_dna.mjs` | Turns a brand DNA file into a brand pack, with WCAG contrast checks and `BRAND-DNA.md` |
 | `engine/use_brand.mjs` | Switches a project to another brand pack |
 | `engine/tts.mjs` | ElevenLabs voiceover and voice samples |
-| `engine/prep_footage.mjs` | Turns a screen recording into cropped frames |
+| `confirm.mjs` | The user's sign-off at a gate (brand, facts, footage, script). Needs a real terminal and a typed "yes"; voided when the approved file changes |
+| `engine/understand_footage.mjs` | Footage report: scene frames, contact sheet, OCR privacy scan with regions and a blur list, optional ElevenLabs transcript |
+| `engine/prep_footage.mjs` | Turns a screen recording into cropped frames, pixelating private regions |
 | `engine/render.mjs`, `make_audio.mjs`, `mix.mjs`, `make_srt.mjs` | Frames, music, final mix, captions |
 | `scenes/catalog.md` | The scene library: 14 tested scene types with markup and timing rules |
 | `templates/` | Shared page files (`base.css`, `player.js`, icons, starter page) and `brand-probe.js` |
@@ -89,9 +94,9 @@ On Windows the folder is `%USERPROFILE%\.claude\skills\case-study-video`. Update
 
 | Stage | Blocks the run (FAIL) | Flags for a decision (WARN) |
 |---|---|---|
-| inputs | Missing tools (with the install command for your OS), no use-case document, missing or wrong ElevenLabs key (key ID or placeholder instead of the secret), API unreachable, not enough credits | Unreadable or scanned document, no measurable result, logo under 600 px, short or low-resolution recording, free plan, no Brand DNA |
-| script | Intake form not confirmed, scene and script ids out of sync, unfilled placeholders, **any figure that is not in the source document** | Length outside the target, sentences over 25 words |
-| render | Missing voiceover files, timeline out of date, wrong footage frame count, missing brand files | Voiceover older than the script |
+| inputs | Missing tools (with the install command for your OS), no use-case document, wrong ElevenLabs key (key ID, placeholder, wrong length, stray spaces; the API's own message is shown), API unreachable, not enough credits | Unreadable or scanned document, no measurable result, logo under 600 px, short or low-resolution recording, free plan, no Brand DNA |
+| script | Brand, facts or footage not signed off by the user, recording not analysed, real footage used against the footage decision, scene and script ids out of sync, unfilled placeholders, **any figure that is not in the source document** (counters are checked at the value they count to) | Length outside the target (voice time and scene padding shown separately), sentences over 25 words |
+| render | Script not signed off, missing voiceover files, timeline out of date, wrong footage frame count, **private text still readable in the prepared footage** (OCR), blur mode without blur regions, missing brand files | Voiceover older than the script, OCR not installed |
 
 ### Brand DNA: videos in a client's brand
 
@@ -111,3 +116,5 @@ The ByteIT pack is built the same way, from `brands/byteit/brand-dna.json`. Its 
 - **Audio review:** Claude cannot listen to audio. A person must check pronunciation and timing before publishing.
 - **Mockups:** the step and output mockups are recreated in HTML with placeholder data, not real screenshots.
 - **Windows:** all scripts are cross-platform Node. The macOS path was tested end to end; run one test video on Windows before rolling out widely.
+- **Privacy scan:** OCR needs `tesseract` (free; `setup.mjs` shows the install command). Without it, Claude reads every frame itself, and the render-stage re-scan of the footage is skipped with a warning.
+- **Sign-offs** stop accidental self-approval: `confirm.mjs` needs a real terminal and a typed "yes". They are a process control, not a security boundary against someone deliberately bypassing them.

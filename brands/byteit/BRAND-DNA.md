@@ -4,16 +4,19 @@ Source: https://byteit.com/ home page, sampled with templates/brand-probe.js on 
 
 ## Palette
 
-| Role | Hex | Used for |
-|---|---|---|
-| primary-dark | `#0E1433` | Dark scenes, headlines |
-| primary | `#0530C0` | Highlight words, "present" states, results band |
-| primary-deep | `#011B73` | Results band gradient end |
-| secondary | `#3E92CC` | Second accent |
-| accent | `#F5831F` | Eyebrows, step numbers, underline swoosh |
-| accent-2 | `#EF8C45` | Softer accent on dark backgrounds |
-| alert | `#E02B1F` | Absent, filtered, blocked |
-| ink / gray / line | `#070707` / `#F6F6F6` / `#E8E8E8` | Body text, soft panels, dividers |
+| Role | Hex | Used for | Source |
+|---|---|---|---|
+| primary-dark | `#0E1433` | Dark scenes, headlines | website |
+| primary-dark-2 | `#101346` | Second dark tone | website |
+| primary | `#0530C0` | Highlight words, "present" states, results band | website |
+| primary-deep | `#011B73` | Results band gradient end | website |
+| secondary | `#3E92CC` | Second accent | website |
+| accent | `#F5831F` | Eyebrows, step numbers, underline swoosh | website |
+| accent-2 | `#EF8C45` | Softer accent on dark backgrounds | website |
+| alert | `#E02B1F` | Absent, filtered, blocked | website |
+| ink | `#070707` | Body text | website |
+| gray | `#F6F6F6` | Soft panels, background motif | website |
+| line | `#E8E8E8` | Dividers | website |
 
 Royal blue (#0530C0) is the most used brand color on the site: links, borders and full-width bands. The main call-to-action button ("Schedule a Free Consultation") uses a darker red-orange, #C5310D. The video keeps #F5831F as the accent and #E02B1F for alert states; use #C5310D if an on-screen button is shown.
 
@@ -42,6 +45,8 @@ Royal blue (#0530C0) is the most used brand color on the site: links, borders an
 - Wordmark "byte" in navy with an orange square and orange and red dots, plus "Byte IT" below. Only a 219x119 PNG is published; ask the design team for an SVG.
 
 ## Visual motifs
+
+Background motif in the video: **arc** (arc, dots, bars or none).
 
 - Orange hand-drawn swoosh under key heading words
 - Large light-gray circular arc behind hero content

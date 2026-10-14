@@ -44,6 +44,19 @@
     ...[...document.querySelectorAll('header svg, [class*=logo] svg')].slice(0, 2).map((s) => ({ inlineSvg: s.outerHTML.slice(0, 3000) })),
     ...[...document.querySelectorAll('link[rel*=icon], meta[property="og:image"]')].map((l) => ({ src: l.href || l.content, rel: l.rel || 'og:image' })),
   ];
+  // Rank the logo candidates: the home-page link wins; wide images beat square icons; social and
+  // partner badges are dropped.
+  const SOCIAL = /facebook|twitter|x\.com|linkedin|instagram|youtube|tiktok|pinterest|whatsapp|github|social|badge|partner|certif/i;
+  const ranked = logos
+    .filter((l) => !SOCIAL.test(`${l.src || ''} ${l.alt || ''}`))
+    .map((l) => {
+      const [w, h] = (l.natural || '0x0').split('x').map(Number);
+      const ratio = w && h ? w / h : (l.inlineSvg ? 3 : 1);
+      const score = (l.homeLink ? 100 : 0) + (l.inlineSvg ? 10 : 0) + (ratio >= 1.5 && ratio <= 8 ? 20 : 0)
+        + Math.min(w, 600) / 30 + (/logo/i.test(`${l.src || ''} ${l.alt || ''}`) ? 15 : 0) - (l.rel ? 40 : 0);
+      return { score: Math.round(score), ...l };
+    })
+    .sort((a, b) => b.score - a.score);
   const links = [...document.querySelectorAll('a[href]')];
   return {
     url: location.href, title: document.title, sampledAt: new Date().toISOString().slice(0, 10),
@@ -53,7 +66,7 @@
     fonts: top(fonts, 6),
     googleFontLinks: [...document.querySelectorAll('link[href*="fonts.googleapis"]')].map((l) => l.href),
     type: { h1: type('h1'), h2: type('h2'), h3: type('h3'), body: type('p'), nav: type('nav a') },
-    buttons, logos: logos.slice(0, 10),
+    buttons, logos: ranked.slice(0, 10),
     headlines: [...document.querySelectorAll('h1,h2,h3')].map((h) => h.innerText.trim().replace(/\s+/g, ' ')).filter(Boolean).slice(0, 20),
     phone: links.filter((a) => a.href.startsWith('tel:')).map((a) => a.href.slice(4))[0] || null,
     email: links.filter((a) => a.href.startsWith('mailto:')).map((a) => a.href.slice(7))[0] || null,

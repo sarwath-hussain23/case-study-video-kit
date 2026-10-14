@@ -3,6 +3,7 @@
 import { readFileSync, existsSync, copyFileSync, readdirSync, mkdirSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { inflateRawSync } from 'node:zlib';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -26,8 +27,8 @@ export function chromeInstalled() {
 
 // How to install a missing tool on this OS (Claude runs these after the user agrees).
 export function installHint(tool) {
-  const mac = { node: 'brew install node', ffmpeg: 'brew install ffmpeg', chrome: 'brew install --cask google-chrome', git: 'brew install git' };
-  const win = { node: 'winget install OpenJS.NodeJS.LTS', ffmpeg: 'winget install Gyan.FFmpeg', chrome: 'winget install Google.Chrome', git: 'winget install Git.Git' };
+  const mac = { node: 'brew install node', ffmpeg: 'brew install ffmpeg', chrome: 'brew install --cask google-chrome', git: 'brew install git', tesseract: 'brew install tesseract' };
+  const win = { node: 'winget install OpenJS.NodeJS.LTS', ffmpeg: 'winget install Gyan.FFmpeg', chrome: 'winget install Google.Chrome', git: 'winget install Git.Git', tesseract: 'winget install UB-Mannheim.TesseractOCR' };
   return (IS_WIN ? win : mac)[tool] + (IS_WIN ? '  (then open a new terminal)' : '  (needs Homebrew: https://brew.sh)');
 }
 
@@ -95,7 +96,7 @@ export function applyBrand(project, brandDir, brandName) {
     for (const f of [page, path.join(project, 'vo.json')].filter(existsSync)) {
       let text = readFileSync(f, 'utf8');
       for (const k of ['tagline', 'website', 'phone', 'spokenName', 'name']) if (old[k]) text = text.split(old[k]).join(brand[k] || '');
-      writeFileSync(f, text);
+      writeFileSync(f, text.replace('<i></i><span></span>', ''));
     }
   }
   mkdirSync(path.join(project, 'src/assets/fonts'), { recursive: true });
@@ -103,8 +104,32 @@ export function applyBrand(project, brandDir, brandName) {
   copyFileSync(path.join(brandDir, 'logo.png'), path.join(project, 'src/assets/logo.png'));
   for (const f of readdirSync(path.join(brandDir, 'fonts')).filter((f) => /\.(woff2?|ttf|otf|txt)$/i.test(f))) copyFileSync(path.join(brandDir, 'fonts', f), path.join(project, 'src/assets/fonts', f));
   if (existsSync(path.join(brandDir, 'BRAND-DNA.md'))) copyFileSync(path.join(brandDir, 'BRAND-DNA.md'), path.join(project, 'BRAND-DNA.md'));
+  // The output file is named after the brand: <Brand>_<project>.
+  const slug = path.basename(path.resolve(project));
+  cfg.output = `${brand.name}_${slug}`.replace(/[^\w-]+/g, '_');
   Object.assign(cfg, { brand: brandName, voice: brand.voice, voiceCandidates: brand.voiceCandidates,
     pronounce: { ...(cfg.pronounce || {}), ...(brand.pronounce || {}) } });
   writeFileSync(cfgFile, JSON.stringify(cfg, null, 2) + '\n');
   return brand;
+}
+
+// ---- user sign-offs ------------------------------------------------------------------------
+// confirm.mjs records each approval gate in project.json "confirmations" with a fingerprint of
+// what the user approved. Editing an approved file afterwards voids that approval.
+export const GATE_FILES = {
+  brand: ['BRAND-DNA.md'],
+  facts: ['intake/INTAKE.md'],
+  footage: ['out/footage_report.json'],
+  script: ['vo.json'],
+};
+export function gateHash(project, gate) {
+  const h = createHash('sha256');
+  for (const f of GATE_FILES[gate]) h.update(existsSync(path.join(project, f)) ? readFileSync(path.join(project, f)) : '');
+  return h.digest('hex').slice(0, 16);
+}
+export function gateStatus(project, cfg, gate) {
+  const c = cfg.confirmations?.[gate];
+  if (!c) return { ok: false, why: `not confirmed yet: ask the user to run  node "${path.join(KIT, 'confirm.mjs')}" "${project}" ${gate}` };
+  if (c.hash !== gateHash(project, gate)) return { ok: false, why: `${GATE_FILES[gate].join(', ')} changed after the user confirmed it: ask them to confirm again` };
+  return { ok: true, why: `confirmed by ${c.by} at ${c.at}` };
 }

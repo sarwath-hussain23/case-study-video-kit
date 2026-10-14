@@ -84,7 +84,7 @@ svg{display:block}
 .ring-cap{font-size:32px;font-weight:400;margin-top:36px;color:#dfe3f5}
 
 /* ---------- S2 problem ---------- */
-#s2_problem .eyebrow{position:absolute;left:150px;top:150px}
+.problem-eyebrow{position:absolute;left:150px;top:150px}
 .cards3{position:absolute;left:150px;right:150px;top:250px;display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
 .pcard{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:28px;padding:56px 46px;min-height:560px;position:relative}
 .pcard.hl{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
@@ -293,3 +293,31 @@ img[data-footage]{display:block;width:1220px;height:auto}
 .contact{display:flex;align-items:center;gap:28px;margin-top:80px;font-size:34px;font-weight:600;color:var(--primary)}
 .contact i{width:10px;height:10px;border-radius:50%;background:var(--alert)}
 .contact span:empty,.contact span:empty+i,.contact i:has(+span:empty){display:none}
+
+/* ---------- step panels added in v1.2: chat, checklist, form fill ---------- */
+/* chat: messages appear in order; .msg.user on the right, .msg.bot on the left */
+.chat{display:flex;flex-direction:column;gap:18px;padding-top:30px}
+.chat .msg{max-width:72%;font-size:22px;line-height:1.45;padding:18px 24px;border-radius:22px;display:flex;gap:14px;align-items:flex-start}
+.chat .msg svg{width:30px;height:30px;flex:none;margin-top:2px}
+.chat .msg.user{align-self:flex-end;background:var(--primary);color:#fff;border-bottom-right-radius:6px}
+.chat .msg.bot{align-self:flex-start;background:color-mix(in srgb,var(--primary) 6%,#fff);color:var(--primary-dark);border-bottom-left-radius:6px}
+.chat .msg.bot svg{color:var(--accent)}
+.chat .typing{align-self:flex-start;display:flex;gap:8px;padding:16px 22px;border-radius:22px;background:#f1f2f6}
+.chat .typing i{width:10px;height:10px;border-radius:50%;background:#aab;animation:blink 1s infinite}
+.chat .typing i:nth-child(2){animation-delay:.2s}.chat .typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
+/* checklist: each .ck row ticks with a popped check */
+.checklist{display:flex;flex-direction:column;gap:16px;padding-top:24px}
+.ck{display:flex;align-items:center;gap:20px;font-size:25px;font-weight:500;color:var(--primary-dark);padding:18px 24px;border-radius:16px;background:#f7f8fb}
+.ck .box{width:40px;height:40px;border-radius:10px;border:3px solid color-mix(in srgb,var(--primary) 35%,#fff);flex:none;position:relative}
+.ck .box em{position:absolute;inset:-3px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center}
+.ck .box em svg{width:26px;height:26px;color:#fff}
+.ck small{margin-left:auto;font-size:18px;font-weight:600;color:var(--accent)}
+/* form fill: a template whose fields fill in one by one (.ff-val types in with "typein") */
+.formfill{padding-top:20px}
+.ff-row{display:grid;grid-template-columns:260px 1fr;align-items:center;gap:20px;padding:16px 0;border-bottom:2px solid var(--line)}
+.ff-row b{font-size:20px;font-weight:600;color:#777;text-transform:uppercase;letter-spacing:.06em}
+.ff-val{font-size:26px;font-weight:600;color:var(--primary-dark);padding:10px 16px;border-radius:12px;background:color-mix(in srgb,var(--primary) 6%,#fff);white-space:nowrap;overflow:hidden}
+.ff-val.tok{font-family:Menlo,monospace;font-size:22px;color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,#fff)}
+.typein{animation-name:typein;animation-duration:.9s;animation-timing-function:steps(24)}
+@keyframes typein{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}

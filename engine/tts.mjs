@@ -9,7 +9,7 @@
 import { writeFileSync, existsSync, mkdirSync, copyFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
-import { projectDir, readJSON, arg, elevenLabsKey } from './lib.mjs';
+import { projectDir, readJSON, arg, elevenLabsKey, gateStatus, gateHash } from './lib.mjs';
 
 const project = projectDir();
 const cfg = readJSON(path.join(project, 'project.json'));
@@ -43,6 +43,10 @@ if (samples) {
   process.exit(0);
 }
 
+// Credits are spent only on a script the user approved (confirm.mjs ... script).
+const sg = gateStatus(project, cfg, 'script');
+if (!sg.ok) { console.error(`The script is not approved yet. ${sg.why}`); process.exit(1); }
+
 const durations = {};
 for (const [i, { id, text }] of lines.entries()) {
   const mp3 = path.join(project, `audio/${id}.mp3`), wav = path.join(project, `audio/${id}.wav`);
@@ -53,6 +57,8 @@ for (const [i, { id, text }] of lines.entries()) {
 }
 const refFile = path.join(project, 'audio/ref.json');
 writeFileSync(path.join(project, 'audio/durations.json'), JSON.stringify(durations, null, 2));
+// Fingerprint of the script this voiceover was made from (preflight compares it with vo.json).
+writeFileSync(path.join(project, 'audio/vo.fingerprint'), gateHash(project, 'script'));
 if (!existsSync(refFile)) copyFileSync(path.join(project, 'audio/durations.json'), refFile);
 writeFileSync(path.join(project, 'src/timeline.js'),
   `window.VO = ${JSON.stringify(durations, null, 2)};\nwindow.VO_REF = ${JSON.stringify(readJSON(refFile), null, 2)};\n`);

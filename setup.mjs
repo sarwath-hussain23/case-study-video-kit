@@ -15,6 +15,9 @@ if (+process.versions.node.split('.')[0] < 18) missing.push(['Node.js 18 or newe
 if (!has('ffmpeg') || !has('ffprobe')) missing.push(['ffmpeg', installHint('ffmpeg')]);
 if (!chromeInstalled()) missing.push(['Google Chrome', installHint('chrome')]);
 
+// Optional: OCR for the privacy scan of screen recordings.
+const ocr = spawnSync('tesseract', ['--version']).status === 0;
+
 if (!existsSync(path.join(KIT, 'node_modules/playwright-core'))) {
   const r = spawnSync('npm', ['install', '--no-audit', '--no-fund'], { cwd: KIT, stdio: 'inherit', shell: IS_WIN });
   if (r.status !== 0) missing.push(['npm packages', `npm install  (in ${KIT})`]);
@@ -27,6 +30,7 @@ if (!existsSync(path.join(projects, '.gitignore'))) writeFileSync(path.join(proj
 
 console.log(missing.length ? 'Missing tools (install, then run setup again):' : 'All tools are installed.');
 for (const [what, cmd] of missing) console.log(`  - ${what}: ${cmd}`);
+if (!ocr) console.log(`\nRecommended (scans screen recordings for private text): tesseract: ${installHint('tesseract')}`);
 console.log(`\nProjects folder: ${projects}`);
 console.log(`ElevenLabs key file: ${env}`);
 console.log(`Open it, paste your secret key (starts with sk_) after "=", and save:\n  ${IS_WIN ? `notepad "${env}"` : `open -e "${env}"`}`);

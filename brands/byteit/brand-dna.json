@@ -22,11 +22,22 @@
   "font": {
     "family": "Poppins",
     "googleFont": true,
-    "weights": [300, 400, 500, 600, 700, 800],
+    "weights": [
+      300,
+      400,
+      500,
+      600,
+      700,
+      800
+    ],
     "fallback": "Helvetica,Arial,sans-serif"
   },
-  "logo": { "url": "https://byteit.com/wp-content/uploads/2023/08/logo.png" },
-  "pronounce": { "n8n": "n-eight-n" },
+  "logo": {
+    "url": "https://byteit.com/wp-content/uploads/2023/08/logo.png"
+  },
+  "pronounce": {
+    "n8n": "n-eight-n"
+  },
   "dna": {
     "paletteNotes": "Royal blue (#0530C0) is the most used brand color on the site: links, borders and full-width bands. The main call-to-action button (\"Schedule a Free Consultation\") uses a darker red-orange, #C5310D. The video keeps #F5831F as the accent and #E02B1F for alert states; use #C5310D if an on-screen button is shown.",
     "typography": [
@@ -43,7 +54,12 @@
       "Orange and red dots from the logo"
     ],
     "toneOfVoice": "A reassuring, plain-spoken IT partner for small and mid-size businesses. Leads with trust and time given back, not with jargon or fear.",
-    "personality": ["Trusted", "Practical", "Approachable", "Growth-focused"],
+    "personality": [
+      "Trusted",
+      "Practical",
+      "Approachable",
+      "Growth-focused"
+    ],
     "headlineSamples": [
       "Your Trusted IT Provider",
       "Serving Businesses of All Sizes",
@@ -61,5 +77,7 @@
       "Don't put more than two accent colors in one scene",
       "Don't stretch, recolor or crop the logo"
     ]
-  }
+  },
+  "motif": "arc",
+  "derived": []
 }

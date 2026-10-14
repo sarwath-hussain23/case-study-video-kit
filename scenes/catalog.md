@@ -1,6 +1,6 @@
 # Scene catalog
 
-Every scene below was rendered and checked in the meeting-attendance example. Build a new video by copying these sections into `src/index.html`, between the title and CTA scenes, and replacing the content. Write a custom panel only when no snippet fits the step (see "Custom panels" at the end).
+Every scene below was rendered and checked: the first 14 in the meeting-attendance example, the chat, checklist and template-fill panels in the v1.2 acceptance run. Build a new video by copying these sections into `src/index.html`, between the title and CTA scenes, and replacing the content. Write a custom panel only when no snippet fits the step (see "Custom panels" at the end).
 
 ## Rules that apply to every scene
 
@@ -24,6 +24,8 @@ Every scene below was rendered and checked in the meeting-attendance example. Bu
 - Scene-specific: `sweep` (ring), `scanbar`, `botmove`, `docscroll`, `fly1`..`fly3`
 
 **Styling**
+- Position and style with classes only. Never write CSS for a scene id (`#s2_problem ...`): ids change from project to project.
+- `{{BRAND}}`, `{{WEBSITE}}`, `{{PHONE}}` and `{{TAGLINE}}` in the title and CTA snippets come from the project's brand (`new-project.mjs` fills them in the starter page). Drop the phone `<span>` and its `<i>` when the brand has no phone.
 - Use brand tokens only: `--primary-dark`, `--primary`, `--primary-deep`, `--secondary`, `--accent`, `--accent-2`, `--alert`, `--ink`, `--gray`, `--line`, `--font`. Never hard-code a brand color.
 - Text helpers: `hl-text` (primary-colored words), `swoosh-wrap` + `swoosh` (accent underline), `eyebrow`, `h2`, `lead`, `tc`.
 - Icons: `<svg><use href="#i-NAME"/></svg>` with NAME one of cal, video, doc, folder, spark, flow, check, x, clock, bot, user, eye, filter, rocket, target. Add new symbols to the sprite at the top of `index.html`.
@@ -44,7 +46,7 @@ Always first. No voiceover (`data-fixed`). Logo, eyebrow, title with swoosh unde
   <section class="scene light" id="s0_title" data-fixed="3.6" data-nologo>
     <div class="bg-arc"></div>
     <div class="center col">
-      <img class="a pop title-logo" style="--d:0.1" src="assets/logo.png" alt="Byte IT">
+      <img class="a pop title-logo" style="--d:0.1" src="assets/logo.png" alt="{{BRAND}}">
       <div class="a rise eyebrow" style="--d:0.9">Automation Case Study</div>
       <h1 class="a rise title" style="--d:1.1">Automated Meeting<br><span class="swoosh-wrap">Attendance &amp; AI Notes<svg class="swoosh" viewBox="0 0 600 30" preserveAspectRatio="none"><path class="a draw" style="--d:1.7" d="M5 22 C 150 4, 420 4, 595 18"/></svg></span></h1>
     </div>
@@ -81,7 +83,7 @@ Dark. Exactly 3 cards: number, icon, title, one-sentence detail. `hl` (accent) a
 ```html
   <section class="scene dark" id="s2_problem">
     <div class="dots-bg"></div>
-    <div class="a rise eyebrow light-eyebrow" style="--d:-0.3">The Problem</div>
+    <div class="a rise eyebrow light-eyebrow problem-eyebrow" style="--d:-0.3">The Problem</div>
     <div class="cards3">
       <div class="a rise pcard" style="--d:0">
         <div class="pnum">01</div><svg class="picon"><use href="#i-clock"/></svg>
@@ -414,12 +416,91 @@ Always last. Logo, tagline with swoosh, website and phone. `data-tail` holds the
   <section class="scene light" id="s13_cta" data-tail="4" data-nologo>
     <div class="bg-arc"></div>
     <div class="center col">
-      <img class="a pop cta-logo" style="--d:-0.3" src="assets/logo.png" alt="Byte IT">
+      <img class="a pop cta-logo" style="--d:-0.3" src="assets/logo.png" alt="{{BRAND}}">
       <h2 class="a rise h2 tc" style="--d:0.9">Automate the busywork.<br><span class="swoosh-wrap">Focus on growing your business.<svg class="swoosh" viewBox="0 0 600 30" preserveAspectRatio="none"><path class="a draw" style="--d:2.4" d="M5 22 C 150 4, 420 4, 595 18"/></svg></span></h2>
-      <div class="a rise contact" style="--d:3.0"><span>byteit.com</span><i></i><span>855-429-8348</span></div>
+      <div class="a rise contact" style="--d:3.0"><span>{{WEBSITE}}</span><i></i><span>{{PHONE}}</span></div>
     </div>
   </section>
 ```
+
+## step-chat: Step panel: chat conversation
+
+A conversation that builds message by message: user requests on the right, the assistant or bot on the left, and a typing indicator before each reply. Use for chatbots, Slack or Teams bots, AI assistants and support flows. Keep each message under 15 words.
+
+```html
+  <section class="scene light step" id="s06_chat" data-step="3">
+    <div class="stepcol">
+      <div class="stepnum a rise" style="--d:-0.3">03</div>
+      <h2 class="a rise" style="--d:-0.1">Ask the<br>Assistant</h2>
+      <p class="a rise" style="--d:0.4">One-sentence description of what happens in this step.</p>
+      <div class="api a rise" style="--d:0.8"><svg><use href="#i-spark"/></svg>Tool or API name</div>
+    </div>
+    <div class="panel">
+      <div class="panel-head a rise" style="--d:0.2"><svg><use href="#i-bot"/></svg>Assistant · #channel</div>
+      <div class="chat">
+        <div class="msg user a rise" style="--d:1.0">What changed in last week's pipeline?</div>
+        <div class="typing a fade" style="--d:1.8"><i></i><i></i><i></i></div>
+        <div class="msg bot a rise" style="--d:3.0"><svg><use href="#i-spark"/></svg>Three deals moved to closing. One stalled.</div>
+        <div class="msg user a rise" style="--d:5.0">Draft the follow-up for the stalled one.</div>
+        <div class="msg bot a rise" style="--d:6.6"><svg><use href="#i-spark"/></svg>Done: the draft is in your inbox.</div>
+      </div>
+    </div>
+  </section>
+```
+
+## step-checklist: Step panel: checklist
+
+Rows that tick one by one as the VO names them, with an optional tag on the right. Use for validations, onboarding steps, compliance checks and QA gates.
+
+```html
+  <section class="scene light step" id="s07_checks" data-step="4">
+    <div class="stepcol">
+      <div class="stepnum a rise" style="--d:-0.3">04</div>
+      <h2 class="a rise" style="--d:-0.1">Automatic<br>Checks</h2>
+      <p class="a rise" style="--d:0.4">One-sentence description of what happens in this step.</p>
+      <div class="api a rise" style="--d:0.8"><svg><use href="#i-filter"/></svg>Tool or API name</div>
+    </div>
+    <div class="panel">
+      <div class="panel-head a rise" style="--d:0.2"><svg><use href="#i-check"/></svg>Checks before sending</div>
+      <div class="checklist">
+        <div class="ck a rise" style="--d:0.6"><span class="box"><em class="a pop" style="--d:1.6"><svg><use href="#i-check"/></svg></em></span>Document found<small class="a fade" style="--d:1.8">ok</small></div>
+        <div class="ck a rise" style="--d:0.8"><span class="box"><em class="a pop" style="--d:3.0"><svg><use href="#i-check"/></svg></em></span>Attendees present<small class="a fade" style="--d:3.2">ok</small></div>
+        <div class="ck a rise" style="--d:1.0"><span class="box"><em class="a pop" style="--d:4.4"><svg><use href="#i-check"/></svg></em></span>Not already processed<small class="a fade" style="--d:4.6">ok</small></div>
+        <div class="ck a rise" style="--d:1.2"><span class="box"><em class="a pop" style="--d:5.8"><svg><use href="#i-check"/></svg></em></span>Bots excluded<small class="a fade" style="--d:6.0">ok</small></div>
+      </div>
+      <div class="panel-foot a rise" style="--d:6.8"><b>4</b> of 4 checks <span class="arrow">→</span> <b class="o">passed</b></div>
+    </div>
+  </section>
+```
+
+## step-formfill: Step panel: template fill
+
+A template whose fields fill in one at a time: the value "types in" from left to right. Use `tok` on a value to show it as a template token before it is filled. Use for document generation, mail merge, proposals, invoices and report templates.
+
+```html
+  <section class="scene light step" id="s08_fill" data-step="5">
+    <div class="stepcol">
+      <div class="stepnum a rise" style="--d:-0.3">05</div>
+      <h2 class="a rise" style="--d:-0.1">Fill the<br>Template</h2>
+      <p class="a rise" style="--d:0.4">One-sentence description of what happens in this step.</p>
+      <div class="api a rise" style="--d:0.8"><svg><use href="#i-doc"/></svg>Tool or API name</div>
+    </div>
+    <div class="panel">
+      <div class="panel-head a rise" style="--d:0.2"><svg><use href="#i-doc"/></svg>Proposal template</div>
+      <div class="formfill">
+        <div class="ff-row a rise" style="--d:0.6"><b>Client</b><span class="ff-val a typein" style="--d:1.4">Northwind Traders</span></div>
+        <div class="ff-row a rise" style="--d:0.8"><b>Project</b><span class="ff-val a typein" style="--d:2.6">Warehouse automation</span></div>
+        <div class="ff-row a rise" style="--d:1.0"><b>Start date</b><span class="ff-val a typein" style="--d:3.8">Nov 3, 2026</span></div>
+        <div class="ff-row a rise" style="--d:1.2"><b>Total</b><span class="ff-val tok a fade" style="--d:1.2">{{total}}</span></div>
+      </div>
+      <div class="panel-foot a rise" style="--d:6.0"><b>4</b> fields <span class="arrow">→</span> <b class="o">ready to send</b></div>
+    </div>
+  </section>
+```
+
+## Scenes between steps
+
+A non-step scene can sit between two step scenes (for example "safeguards" after step 5). Give it `class="scene light step-aside" data-after="5"`: it shows the "How it works" tracker with steps 1 to 5 done and none active, so viewers know the walkthrough is paused, not finished.
 
 ## Custom panels
 
